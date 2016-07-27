@@ -1,0 +1,69 @@
+---
+- name: Install postfix
+  apt:
+    name: postfix
+    force: yes
+    state: present
+
+- name: Configure postfix main
+  template:
+      src: postfix_main
+      dest: /etc/postfix/main.cf
+      mode: 0644
+      owner: root
+      group: root
+  notify: Reload postfix
+
+- name: Configure postfix aliases
+  copy:
+      src: "{{ postfix_aliases }}"
+      dest: /etc/aliases
+      mode: 0644
+      owner: root
+      group: root
+  notify: New aliases
+  when: postfix_aliases is defined
+
+- name: Configure postfix mailname
+  copy:
+      content: "{{ postfix_hostname }}"
+      dest: /etc/mailname
+      mode: 0644
+      owner: root
+      group: root
+  notify: Reload postfix
+
+- name: Set transport map
+  template:
+      src: transport_map
+      dest: "{{ postfix_postmap }}"
+      mode: 0644
+      owner: root
+      group: root
+  notify: Reload postfix
+
+- name: Set recipient blacklist
+  copy:
+      src: blacklist_destinations
+      dest: "{{ postfix_recipient_blacklist }}"
+      mode: 0644
+      owner: root
+      group: root
+  notify:
+    - Reload blacklist
+    - Reload postfix
+
+- name: Set master config
+  copy:
+      src: postfix_master
+      dest: /etc/postfix/master.cf
+      mode: 0644
+      owner: root
+      group: root
+  notify: Reload postfix
+
+- name: Allow SMTP
+  ufw:
+    port: 25
+    proto: tcp
+    rule: allow

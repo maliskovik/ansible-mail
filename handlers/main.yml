@@ -1,0 +1,27 @@
+---
+- name: Restart opendkim
+  service:
+    name: opendkim
+    state: restarted
+    enabled: yes
+
+- name: Restart postfix
+  service:
+    name: postfix
+    state: restarted
+    enabled: yes
+
+- name: Reload postfix
+  service:
+    name: postfix
+    state: reloaded
+    enabled: yes
+
+- name: New aliases
+  command: newaliases
+
+- name: Reload postmap
+  command: "postmap {{ postfix_postmap }}"
+
+- name: Reload blacklist
+  command: "postmap {{ postfix_recipient_blacklist }}"

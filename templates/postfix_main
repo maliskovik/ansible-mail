@@ -1,0 +1,69 @@
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+append_dot_mydomain = no
+readme_directory = no
+
+# TLS parameters
+smtpd_tls_cert_file={{ postfix_tls_cert | default( postfix_ssl_cert ) }}
+smtpd_tls_key_file={{ postfix_tls_key | default( postfix_ssl_key ) }}
+smtpd_use_tls=yes
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+smtpd_tls_mandatory_protocols=!SSLv2,!SSLv3
+smtpd_tls_mandatory_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
+smtpd_tls_dh1024_param_file = /opt/certs/dhparams.pem
+
+# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
+# information on enabling SSL in the smtp client.
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = {{ postfix_hostname }}
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = {{ postfix_destinations }}
+relayhost =
+mynetworks = {{ postfix_networks }}
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = ipv4
+
+# SASL support for lients
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+smtpd_recipient_restrictions =
+  check_recipient_access hash:/etc/postfix/blacklist_destinations,
+  permit_sasl_authenticated,
+  permit_mynetworks,
+  check_relay_domains
+
+# DKIM
+milter_default_action = accept
+milter_protocol = 2
+non_smtpd_milters=inet:localhost:8891
+smtpd_milters=inet:localhost:8891
+
+#Max time before resending defered
+maximal_backoff_time = 6h
+
+# Skrajsan bounce/queue time
+bounce_queue_lifetime = 2d
+maximal_queue_lifetime = 3d
+transport_maps = hash:/etc/postfix/transport_map
+
+# Transport limits, to gain back good reputation - http://steam.io/2013/04/01/postfix-rate-limiting/
+default_destination_concurrency_limit = 40
+initial_destination_concurrency = 10
+virtual_destination_concurrency_limit = 35
+# slow transport limit
+slow_destination_concurrency_limit = 2
+# slo mail domains throttling
+# max 3600 mails per hour per domain, siol max is 5000/hour
+medium_destination_rate_delay = 1s
+medium_destination_recipient_limit = 3
+medium_destination_concurrency_limit = 5
+# gmail.com, yahoo.com, etc. throttling
+polite_destination_concurrency_limit = 8
+polite_destination_recipient_limit = 2

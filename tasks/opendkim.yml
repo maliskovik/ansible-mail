@@ -1,0 +1,82 @@
+---
+# Opendkim configuration script
+
+- name: Install opendkim
+  apt:
+      name: opendkim,opendkim-tools
+      force: yes
+      state: present
+
+- name: Create opendkim directory
+  file:
+      state: directory
+      owner: opendkim
+      group: opendkim
+      mode: 0755
+      path: "{{ opendkim_config_directory }}"
+
+- name: Create opendkim keys directory
+  file:
+      state: directory
+      owner: opendkim
+      group: opendkim
+      mode: 0700
+      path: "{{ opendkim_keys_directory }}"
+
+- name: Configure opendkim
+  copy:
+      src: opendkim.conf
+      dest: /etc/opendkim.conf
+      owner: root
+      group: root
+      mode: 0644
+  notify: Restart opendkim
+
+- name: Add trustedHosts
+  template:
+      src: trusted_hosts
+      dest: "{{ opendkim_config_directory }}/trustedHosts"
+      mode: 0644
+      owner: opendkim
+      group: opendkim
+  notify: Restart opendkim
+
+# Creates the key if it does not exist
+- name: Create keys
+  when: opendkim_list is defined
+  with_items: opendkim_list
+  delegate_to: 127.0.0.1
+  sudo: no
+  command: opendkim-genkey -r -s {{ item.selector }} -d {{ item.domain }}
+  args:
+      creates: "{{ item.selector }}.private"
+      chdir: "{{ opendkim_local_keys_directory }}"
+
+- name: Transfer opendkim keys
+  with_items: opendkim_list
+  when: opendkim_list is defined
+  copy:
+      src: "{{ opendkim_local_keys_directory }}/{{ item.selector }}.private"
+      dest: "{{ opendkim_keys_directory }}/{{ item.selector }}.private"
+      mode: 0600
+      owner: opendkim
+      group: opendkim
+  notify: Restart opendkim
+
+- name: Add signingTable
+  template:
+      src: signing_table
+      dest: "{{ opendkim_signing_table }}"
+      mode: 0644
+      owner: opendkim
+      group: opendkim
+  notify: Restart opendkim
+
+- name: Add keyTable
+  template:
+      src: key_table
+      dest: "{{ opendkim_key_table }}"
+      mode: 0644
+      owner: opendkim
+      group: opendkim
+  notify: Restart opendkim

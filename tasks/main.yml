@@ -1,0 +1,5 @@
+---
+# Mail server sonfiguration script
+
+- include: postfix.yml
+- include: opendkim.yml
