@@ -40,7 +40,7 @@ recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = ipv4
 
-# SASL support for lients
+# SASL support for clients
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain = $myhostname
