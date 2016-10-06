@@ -15,3 +15,4 @@ opendkim_keys_directory: "{{ opendkim_config_directory }}/keys"
 opendkim_signing_table: "{{ opendkim_config_directory }}/signingTable"
 opendkim_key_table: "{{ opendkim_config_directory }}/keyTable"
 opendkim_local_keys_directory: "files/keys"
+opendkim_socket_port: 8891

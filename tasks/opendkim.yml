@@ -32,6 +32,15 @@
       mode: 0644
   notify: Restart opendkim
 
+- name: Set opendkim socket
+  template:
+    src: opendkim_default
+    dest: /etc/default/opendkim
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart opendkim
+
 - name: Add trustedHosts
   template:
       src: trusted_hosts
