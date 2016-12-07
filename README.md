@@ -10,10 +10,10 @@ This ansible role installs and configures postfix with opendkim
 copied from the files(if it exists), or is created.
     * selector - opendkim selector for the key
     * domain - domain for the key
+* postfix_hostname - postfix myhostname variable
 
 ## Optional variables
 
-* postfix_hostname - postfix myhostname variable
 * postfix_destination - Hosts to allow forwarding from
 * postfix_networks - postfix mynetworks variable"
 * postfix_aliases - path to the aliases file to use on remote.
