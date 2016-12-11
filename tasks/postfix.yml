@@ -16,7 +16,7 @@
 
 - name: Configure postfix aliases
   copy:
-      src: "{{ postfix_aliases }}"
+      src: "{{ postfix_aliases|default(omit) }}"
       dest: /etc/aliases
       mode: 0644
       owner: root
@@ -41,17 +41,6 @@
       owner: root
       group: root
   notify: Reload postfix
-
-- name: Set recipient blacklist
-  copy:
-      src: blacklist_destinations
-      dest: "{{ postfix_recipient_blacklist }}"
-      mode: 0644
-      owner: root
-      group: root
-  notify:
-    - Reload blacklist
-    - Reload postfix
 
 - name: Set master config
   copy:

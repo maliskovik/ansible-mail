@@ -29,7 +29,7 @@ variable contain a list of dictionaries with identifier and domain values
 *example:*
 ```
 opendkim_list:
-    - identifier: <selector>
+    - selector: <selector>
       domain: <domain>
 ```
 Also, the keys should already be automatically generated if not present in:
