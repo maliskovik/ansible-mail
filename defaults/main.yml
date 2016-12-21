@@ -14,3 +14,4 @@ opendkim_signing_table: "{{ opendkim_config_directory }}/signingTable"
 opendkim_key_table: "{{ opendkim_config_directory }}/keyTable"
 opendkim_local_keys_directory: "files/keys"
 opendkim_socket_port: 8891
+opendkim_group: "{% if ansible_os_family == 'Archlinux' %}mail{% else %}opendkim{% endif %}"
