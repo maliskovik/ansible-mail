@@ -1,11 +1,18 @@
 ---
 # Opendkim configuration script
 
-- name: Install opendkim
+- name: Install opendkim - Ubuntu
   apt:
       name: opendkim,opendkim-tools
       force: yes
       state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install opendkim - Archlinux
+  pacman:
+    name: opendkim
+    state: present
+  when: ansible_os_family == "Archlinux"
 
 - name: Create opendkim directory
   file:
@@ -40,6 +47,7 @@
     group: root
     mode: 0644
   notify: Restart opendkim
+  when: ansible_os_family == "Debian"
 
 - name: Add trustedHosts
   template:

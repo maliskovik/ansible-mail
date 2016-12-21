@@ -1,9 +1,16 @@
 ---
-- name: Install postfix
+- name: Install postifx - Ubuntu
   apt:
+      name: postfix
+      force: yes
+      state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install postifx - Archlinux
+  pacman:
     name: postfix
-    force: yes
     state: present
+  when: ansible_os_family == "Archlinux"
 
 - name: Configure postfix main
   template:
