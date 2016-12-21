@@ -1,0 +1,21 @@
+MAILER-DAEMON:  postmaster
+postmaster:     root
+bin:            root
+daemon:         root
+named:          root
+nobody:         root
+uucp:           root
+www:            root
+ftp-bugs:       root
+postfix:        root
+manager:        root
+dumper:         root
+operator:       root
+decode:         root
+abuse:          root
+webmaster:      root
+{% if postfix_aliases is defined %}
+{% for item in postfix_aliases %}
+{{ item.name }}: {{ item.alias }}
+{% endfor %}
+{% endif %}

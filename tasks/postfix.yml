@@ -23,13 +23,13 @@
 
 - name: Configure postfix aliases
   copy:
-      src: "{{ postfix_aliases|default(omit) }}"
+      src: "{{ postfix_aliases_file|default(omit) }}"
       dest: /etc/aliases
       mode: 0644
       owner: root
       group: root
   notify: New aliases
-  when: postfix_aliases is defined
+  when: postfix_aliases_file is defined
 
 - name: Configure postfix mailname
   copy:
