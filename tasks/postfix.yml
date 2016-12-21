@@ -22,7 +22,7 @@
   notify: Reload postfix
 
 - name: Configure postfix aliases
-  copy:
+  template:
       src: "{{ postfix_aliases_file|default(omit) }}"
       dest: /etc/aliases
       mode: 0644
