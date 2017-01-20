@@ -19,7 +19,9 @@
       mode: 0644
       owner: root
       group: root
-  notify: Reload postfix
+  notify: 
+    - Reload postfix
+    - Reload postmap
 
 - name: Configure postfix aliases
   template:
@@ -47,7 +49,9 @@
       mode: 0644
       owner: root
       group: root
-  notify: Reload postfix
+  notify: 
+    - Reload postfix
+    - Reload postmap
 
 - name: Set master config
   copy:
@@ -56,7 +60,9 @@
       mode: 0644
       owner: root
       group: root
-  notify: Reload postfix
+  notify: 
+    - Reload postfix
+    - Reload postmap
 
 - name: Allow SMTP
   ufw:
