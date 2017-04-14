@@ -1,7 +1,35 @@
-smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+myhostname = {{ postfix_hostname }}
+mydomain = {{ postfix_domain }}
+myorigin = {{ postfix_origin }}
+mydestination = {{ postfix_destinations }}
+mail_spool_directory = /home/vmailer
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+relayhost =
+mynetworks = {{ postfix_networks }}
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = ipv4
+local_recipient_maps = $virtual_mailbox_maps
+local_transport = virtual
+transport_maps = hash:/etc/postfix/transport_msap
+smtpd_banner = $myhostname ESMTP $mail_name
 biff = no
 append_dot_mydomain = no
 readme_directory = no
+
+# Virtual mail settings
+virtual_alias_maps = proxy:mysql:/etc/postfix/virtual_alias_maps.cf
+virtual_mailbox_domains = proxy:mysql:/etc/postfix/virtual_mailbox_domains.cf
+virtual_mailbox_maps = proxy:mysql:/etc/postfix/virtual_mailbox_maps.cf
+virtual_mailbox_base = /home/vmail
+virtual_mailbox_limit = 512000000
+virtual_minimum_uid = 5000
+virtual_transport = virtual
+virtual_uid_maps = static:5000
+virtual_gid_maps = static:5000
 
 # TLS parameters
 ## Incoming
@@ -27,27 +55,25 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 # See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
 # information on enabling SSL in the smtp client.
 
-smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-myhostname = {{ postfix_hostname }}
-alias_maps = hash:/etc/aliases
-alias_database = hash:/etc/aliases
-myorigin = /etc/mailname
-mydestination = {{ postfix_destinations }}
-relayhost =
-mynetworks = {{ postfix_networks }}
-mailbox_size_limit = 0
-recipient_delimiter = +
-inet_interfaces = all
-inet_protocols = ipv4
 
 # SASL support for clients
 smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = /var/run/dovecot/auth-client
+smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
 smtpd_sasl_security_options = noanonymous
-smtpd_sasl_local_domain = $myhostname
-smtpd_recipient_restrictions =
-  permit_sasl_authenticated,
-  permit_mynetworks,
-  check_relay_domains
+smtpd_sasl_tls_security_options = $smtpd_sasl_security_options
+smtpd_tls_security_level = may
+smtpd_tls_auth_only = yes
+smtpd_tls_received_header = yes
+smtpd_tls_cert_file = /etc/ssl/private/vmail.crt
+smtpd_tls_key_file = /etc/ssl/private/vmail.key
+smtpd_sasl_local_domain = $mydomain
+broken_sasl_auth_clients = yes
+smtpd_tls_loglevel = 1
+smtp_tls_security_level = may
+smtp_tls_loglevel = 1
 
 # DKIM
 milter_default_action = accept
@@ -58,10 +84,8 @@ smtpd_milters=inet:localhost:8891
 #Max time before resending defered
 maximal_backoff_time = 6h
 
-# Skrajsan bounce/queue time
 bounce_queue_lifetime = 2d
 maximal_queue_lifetime = 3d
-transport_maps = hash:/etc/postfix/transport_map
 
 # Transport limits, to gain back good reputation - http://steam.io/2013/04/01/postfix-rate-limiting/
 default_destination_concurrency_limit = 40
