@@ -1,0 +1,25 @@
+user = postfix_user
+password = IXYqHKUzXozX9LA2aOlAUwfodhBT5uWagmIteeLaUt6EyrDDKQrMkAhIxOxjfzV8
+hosts = localhost
+dbname = postfix_db
+table = alias
+select_field = goto
+where_field = address
+
+
+
+user = postfix_user
+password = IXYqHKUzXozX9LA2aOlAUwfodhBT5uWagmIteeLaUt6EyrDDKQrMkAhIxOxjfzV8
+hosts = localhost
+dbname = postfix_db
+table = domain
+select_field = domain
+where_field = domain
+
+user = postfix_user
+password = IXYqHKUzXozX9LA2aOlAUwfodhBT5uWagmIteeLaUt6EyrDDKQrMkAhIxOxjfzV8
+hosts = localhost
+dbname = postfix_db
+table = mailbox
+select_field = maildir
+where_field = username

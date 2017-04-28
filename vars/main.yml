@@ -1,0 +1,13 @@
+postifx_db_configs:
+  aliases:
+    table: alias
+    select_field: domain
+    where_field: address
+  domains:
+    table: domain
+    select_field: domain
+    where_field: domain
+  mailbox:
+    table: mailbox
+    select_field: maildir
+    where_field: username

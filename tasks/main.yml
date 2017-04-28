@@ -3,3 +3,4 @@
 
 - include: postfix.yml
 - include: opendkim.yml
+- include: dovecot.yml

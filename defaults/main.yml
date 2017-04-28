@@ -9,6 +9,13 @@ postfix_tls: "yes"
 postfix_recipient_blacklist: "/etc/postfix/blacklist_destinations"
 postfix_postmap: "/etc/postfix/transport_map"
 postfix_aliases_file: aliases
+
+# Postfix DB Variables
+postfix_db_user: "postifx_user"
+postfix_db_password: "SomeRandomPassword4589nh845ung827g5bn"
+postfix_db_host: "localhost"
+postfix_db_name: "postifx"
+
 # DKIM variables
 opendkim_config_directory: /etc/opendkim
 opendkim_keys_directory: "{{ opendkim_config_directory }}/keys"

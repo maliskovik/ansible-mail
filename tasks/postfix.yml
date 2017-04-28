@@ -19,7 +19,7 @@
       mode: 0644
       owner: root
       group: root
-  notify: 
+  notify:
     - Reload postfix
     - Reload postmap
 
@@ -49,7 +49,7 @@
       mode: 0644
       owner: root
       group: root
-  notify: 
+  notify:
     - Reload postfix
     - Reload postmap
 
@@ -60,10 +60,26 @@
       mode: 0644
       owner: root
       group: root
-  notify: 
+  notify:
     - Reload postfix
     - Reload postmap
 
+- name: Set db configs
+  template:
+    src: "postfix_db_config"
+    dest: "/etc/postfix/virtual_alias_maps.cf"
+    mode: 0644
+    owner: root
+    group: root
+  with_items: "{ postifx_db_configs }"
+
+- name: Install postfix admin - Archlinux
+  pacman:
+    name: postfixadmin
+    state: latest
+  when: ansible_os_family == "Archlinux"
+
+- name: Configure Postfix Admin
 - name: Allow SMTP
   ufw:
     port: 25

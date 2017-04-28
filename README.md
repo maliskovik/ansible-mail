@@ -16,7 +16,9 @@ copied from the files(if it exists), or is created.
 
 * postfix_destination - Hosts to allow forwarding from
 * postfix_networks - postfix mynetworks variable"
-* postfix_aliases - path to the aliases file to use on remote.
+* postfix_aliases - A list of aliases with 'name' and 'alias' keys.
+* postfix_tls_cert - tls cert to use for postfix
+* postfix_tls_key - tls key to use for postfix
 * opendkim_config_directory -  where all opendkim configuration is placed
 * opendkim_keys_directory - wherer to place dkim keys on remote
 * opendkim_signing_table - location of the signing table file on remote

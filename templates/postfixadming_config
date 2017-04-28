@@ -1,0 +1,151 @@
+<?php
+$CONF['configured'] = true;
+$CONF['setup_password'] = 'changeme';
+$CONF['default_language'] = 'en';
+$CONF['language_hook'] = '';
+function language_hook($PALANG, $language) {
+    switch ($language) {
+        case "de":
+            $PALANG['x_whatever'] = 'foo';
+            break;
+        case "fr":
+            $PALANG['x_whatever'] = 'bar';
+            break;
+        default:
+            $PALANG['x_whatever'] = 'foobar';
+    }
+
+    return $PALANG;
+}
+$CONF['database_type'] = 'mysql';
+$CONF['database_host'] = '{{ postfix_db_host }}';
+$CONF['database_user'] = '{{ postfix_db_user }}';
+$CONF['database_password'] = '{{ postfix_db_password }}';
+$CONF['database_name'] = '{{ postfix_db_name }}';
+$CONF['database_prefix'] = '';
+$CONF['database_tables'] = array (
+    'admin' => 'admin',
+    'alias' => 'alias',
+    'alias_domain' => 'alias_domain',
+    'config' => 'config',
+    'domain' => 'domain',
+    'domain_admins' => 'domain_admins',
+    'fetchmail' => 'fetchmail',
+    'log' => 'log',
+    'mailbox' => 'mailbox',
+    'vacation' => 'vacation',
+    'vacation_notification' => 'vacation_notification',
+    'quota' => 'quota',
+        'quota2' => 'quota2',
+);
+
+$CONF['admin_email'] = '';
+$CONF['smtp_server'] = 'localhost';
+$CONF['smtp_port'] = '25';
+$CONF['smtp_client'] = '';
+$CONF['encrypt'] = 'dovecot:SHA512-CRYPT';
+$CONF['authlib_default_flavor'] = 'md5raw';
+$CONF['dovecotpw'] = "/usr/sbin/doveadm pw";
+$CONF['password_validation'] = array(
+#    '/regular expression/' => '$PALANG key (optional: + parameter)',
+    '/.{5}/'                => 'password_too_short 5',      # minimum length 5 characters
+    '/([a-zA-Z].*){3}/'     => 'password_no_characters 3',  # must contain at least 3 characters
+    '/([0-9].*){2}/'        => 'password_no_digits 2',      # must contain at least 2 digits
+);
+$CONF['generate_password'] = 'NO';
+$CONF['show_password'] = 'NO';
+$CONF['page_size'] = '10';
+$CONF['default_aliases'] = array (
+    'abuse' => 'abuse@change-this-to-your.domain.tld',
+    'hostmaster' => 'hostmaster@change-this-to-your.domain.tld',
+    'postmaster' => 'postmaster@change-this-to-your.domain.tld',
+    'webmaster' => 'webmaster@change-this-to-your.domain.tld'
+);
+$CONF['domain_path'] = 'YES';
+$CONF['domain_in_mailbox'] = 'NO';
+$CONF['maildir_name_hook'] = 'NO';
+
+$CONF['admin_struct_hook']          = '';
+$CONF['domain_struct_hook']         = '';
+$CONF['alias_struct_hook']          = '';
+$CONF['mailbox_struct_hook']        = '';
+$CONF['alias_domain_struct_hook']   = '';
+$CONF['fetchmail_struct_hook']      = '';
+$CONF['aliases'] = '10';
+$CONF['mailboxes'] = '10';
+$CONF['maxquota'] = '10';
+$CONF['domain_quota_default'] = '2048';
+$CONF['quota'] = 'NO';
+$CONF['domain_quota'] = 'YES';
+$CONF['quota_multiplier'] = '1024000';
+$CONF['transport'] = 'NO';
+$CONF['transport_options'] = array (
+    'virtual',  // for virtual accounts
+    'local',    // for system accounts
+    'relay'     // for backup mx
+);
+$CONF['transport_default'] = 'virtual';
+$CONF['vacation'] = 'NO';
+$CONF['vacation_domain'] = 'autoreply.change-this-to-your.domain.tld';
+$CONF['vacation_control'] ='YES';
+$CONF['vacation_control_admin'] = 'YES';
+$CONF['vacation_choice_of_reply'] = array (
+   0 => 'reply_once',        // Sends only Once the message during Out of Office
+   # considered annoying - only send a reply on every mail if you really need it
+   # 1 => 'reply_every_mail',       // Reply on every email
+   60*60 *24*7 => 'reply_once_per_week'        // Reply if last autoreply was at least a week ago
+);
+$CONF['alias_control'] = 'YES';
+$CONF['alias_control_admin'] = 'YES';
+$CONF['special_alias_control'] = 'NO';
+$CONF['alias_goto_limit'] = '0';
+$CONF['alias_domain'] = 'YES';
+$CONF['backup'] = 'NO';
+$CONF['sendmail'] = 'YES';
+$CONF['logging'] = 'YES';
+$CONF['fetchmail'] = 'YES';
+$CONF['fetchmail_extra_options'] = 'NO';
+$CONF['show_header_text'] = 'NO';
+$CONF['header_text'] = ':: Postfix Admin ::';
+$CONF['show_footer_text'] = 'YES';
+$CONF['footer_text'] = 'Return to change-this-to-your.domain.tld';
+$CONF['footer_link'] = 'http://change-this-to-your.domain.tld';
+$CONF['motd_user'] = '';
+$CONF['motd_admin'] = '';
+$CONF['motd_superadmin'] = '';
+$CONF['welcome_text'] = <<<EOM
+Hi,
+
+Welcome to your new account.
+EOM;
+
+$CONF['emailcheck_resolve_domain']='YES';
+$CONF['show_status']='YES';
+$CONF['show_status_key']='YES';
+$CONF['show_status_text']='&nbsp;&nbsp;';
+$CONF['show_undeliverable']='YES';
+$CONF['show_undeliverable_color']='tomato';
+$CONF['show_undeliverable_exceptions']=array("unixmail.domain.ext","exchangeserver.domain.ext");
+$CONF['show_popimap']='YES';
+$CONF['show_popimap_color']='darkgrey';
+$CONF['show_custom_domains']=array("subdomain.domain.ext","domain2.ext");
+$CONF['show_custom_colors']=array("lightgreen","lightblue");
+$CONF['recipient_delimiter'] = "";
+$CONF['mailbox_postcreation_script'] = '';
+$CONF['mailbox_postedit_script'] = '';
+$CONF['mailbox_postdeletion_script'] = '';
+$CONF['domain_postcreation_script'] = '';
+$CONF['domain_postdeletion_script'] = '';
+$CONF['create_mailbox_subdirs'] = array();
+$CONF['create_mailbox_subdirs_host']='localhost';
+$CONF['create_mailbox_subdirs_prefix']='INBOX.';
+$CONF['used_quotas'] = 'NO';
+$CONF['new_quota_table'] = 'YES';
+$CONF['create_mailbox_subdirs_hostoptions'] = array('');
+$CONF['theme_logo'] = 'images/logo-default.png';
+$CONF['theme_css'] = 'css/default.css';
+$CONF['theme_custom_css'] = '';
+$CONF['xmlrpc_enabled'] = false;
+if (file_exists(dirname(__FILE__) . '/config.local.php')) {
+    include_once(dirname(__FILE__) . '/config.local.php');
+}

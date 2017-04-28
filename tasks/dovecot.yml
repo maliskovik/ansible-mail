@@ -1,0 +1,11 @@
+- name: Configure dovecot main
+  template:
+    src: dovecot.conf
+    dest: /etc/dovecot/dovecot.conf
+    mode: 0644
+
+- name: Configure dovecot database settings
+  template:
+    src: dovecot_db_config
+    dest: /etc/dovecot/dovecot-sql.conf
+    mode: 0644
