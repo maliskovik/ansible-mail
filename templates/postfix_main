@@ -33,7 +33,7 @@ alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
 mydestination = {{ postfix_destinations }}
-relayhost =
+relayhost = "{{ postfix_relayhost }}"
 mynetworks = {{ postfix_networks }}
 mailbox_size_limit = 0
 recipient_delimiter = +
@@ -49,11 +49,13 @@ smtpd_recipient_restrictions =
   permit_mynetworks,
   check_relay_domains
 
+{% if postfix_opendkim == True %}
 # DKIM
 milter_default_action = accept
 milter_protocol = 2
 non_smtpd_milters=inet:localhost:8891
 smtpd_milters=inet:localhost:8891
+{% endif %}
 
 #Max time before resending defered
 maximal_backoff_time = 6h
@@ -61,7 +63,7 @@ maximal_backoff_time = 6h
 # Skrajsan bounce/queue time
 bounce_queue_lifetime = 2d
 maximal_queue_lifetime = 3d
-transport_maps = hash:/etc/postfix/transport_map
+transport_maps = hash:/etc/postfix/transport
 
 # Transport limits, to gain back good reputation - http://steam.io/2013/04/01/postfix-rate-limiting/
 default_destination_concurrency_limit = 40
@@ -77,3 +79,10 @@ medium_destination_concurrency_limit = 5
 # gmail.com, yahoo.com, etc. throttling
 polite_destination_concurrency_limit = 8
 polite_destination_recipient_limit = 2
+
+{% if postfix_virtual_fallback == True %}
+# Virtual
+fallback_transport = virtual
+virtual_alias_maps = regexp:/etc/postfix/virtual_regexp
+virtual_mailbox_base = /var/mail/virtual
+{% endif %}
