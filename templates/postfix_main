@@ -63,7 +63,7 @@ maximal_backoff_time = 6h
 # Skrajsan bounce/queue time
 bounce_queue_lifetime = 2d
 maximal_queue_lifetime = 3d
-transport_maps = hash:/etc/postfix/transport
+transport_maps = hash:{{ postfix_postmap }}
 
 # Transport limits, to gain back good reputation - http://steam.io/2013/04/01/postfix-rate-limiting/
 default_destination_concurrency_limit = 40
