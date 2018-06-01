@@ -1,8 +1,9 @@
 # Mail role
-This ansible role installs and configures postfix with opendkim
+This ansible role installs and configures sendmial for small setups or postfix with opendkim for full setups.
 
 ## Mandatory variables
 
+* mail_sender: Which agent to use (sendmail(default) or opendkim)
 * opendkim_trusted_hosts -  Host legible for signing
 * postfix_destinations - Hosts to allow forwarding from
 * postfix_networks - postfix networks

@@ -1,6 +1,8 @@
 ---
 # Mail server sonfiguration script
-
+- include: sendmail.yml
+  when: mail_sender == "sendmail"
 - include: postfix.yml
+  when: mail_sender == "postfix"
 - include: opendkim.yml
   when: postfix_opendkim == True

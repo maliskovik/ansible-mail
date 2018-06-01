@@ -25,3 +25,9 @@
 
 - name: Reload blacklist
   command: "postmap {{ postfix_recipient_blacklist }}"
+
+- name: Restart sendmail
+  service:
+    name: sendmail
+    state: restarted
+    enabled: yes

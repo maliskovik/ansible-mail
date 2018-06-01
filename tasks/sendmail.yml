@@ -1,0 +1,9 @@
+---
+
+- name: Install sendmail
+  apt:
+      name: sendmail
+      force: yes
+      state: present
+  when: ansible_os_family == "Debian"
+  notify: Restart sendmail

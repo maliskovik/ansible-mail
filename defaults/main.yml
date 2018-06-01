@@ -1,4 +1,6 @@
 ---
+mail_sender: "sendmail"
+
 # Postfix variables
 postfix_hostname: localhost
 postfix_destination: localhost
