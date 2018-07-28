@@ -19,7 +19,7 @@
       mode: 0644
       owner: root
       group: root
-  notify: 
+  notify:
     - Reload postfix
     - Reload postmap
 
@@ -49,7 +49,7 @@
       mode: 0644
       owner: root
       group: root
-  notify: 
+  notify:
     - Reload postfix
     - Reload postmap
 
@@ -60,7 +60,7 @@
       mode: 0644
       owner: root
       group: root
-  notify: 
+  notify:
     - Reload postfix
     - Reload postmap
 
