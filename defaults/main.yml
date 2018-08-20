@@ -13,6 +13,8 @@ postfix_virtual_fallback: False
 # DKIM variables
 postfix_opendkim: False
 opendkim_config_directory: /etc/opendkim
+opendkim_config_file_path: "/etc/opendkim.conf"
+opendkim_uid: 107
 opendkim_keys_directory: "{{ opendkim_config_directory }}/keys"
 opendkim_signing_table: "{{ opendkim_config_directory }}/signingTable"
 opendkim_key_table: "{{ opendkim_config_directory }}/keyTable"

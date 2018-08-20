@@ -23,6 +23,47 @@
     - Reload postfix
     - Reload postmap
 
+- name: Create postfix etc - Arch linux
+  file:
+    path: /var/spool/postifx/etc
+    state: directory
+    owner: postifx
+    group: root
+  when: ansible_os_family == "Archlinux"
+
+- name: Copy services - Arch
+  copy:
+    src: /etc/services
+    dest: /var/spool/postifx/etc/services
+    remote_src: yes
+    owner: postifx
+    group: root
+    mode: 0644
+  notify: Reload nginx
+  when: ansible_os_family == "Archlinux"
+
+- name: Copy resolv - Arch
+  copy:
+    src: /etc/resolv.conf
+    dest: /var/spool/postifx/etc/resolv.conf
+    remote_src: yes
+    owner: postifx
+    group: root
+    mode: 0644
+  notify: Reload nginx
+  when: ansible_os_family == "Archlinux"
+
+- name: Copy nsswitch - Arch
+  copy:
+    src: /etc/nsswitch.conf
+    dest: /var/spool/postifx/etc/nsswitch.conf
+    remote_src: yes
+    owner: postifx
+    group: root
+    mode: 0644
+  notify: Reload nginx
+  when: ansible_os_family == "Archlinux"
+
 - name: Configure postfix aliases
   template:
       src: "{{ postfix_aliases_file|default(omit) }}"

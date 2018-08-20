@@ -30,10 +30,16 @@
       mode: 0700
       path: "{{ opendkim_keys_directory }}"
 
+- set_fact:
+    opendkim_config_file_path: "/etc/opendkim/opendkim.conf"
+    opendkim_socket_path: "/run/opendkim/opendkim.sock"
+    opendkim_uid: opendkim
+  when: ansible_os_family == "Archlinux"
+
 - name: Configure opendkim
-  copy:
+  template:
       src: opendkim.conf
-      dest: /etc/opendkim.conf
+      dest: "{{ opendkim_config_file_path }}"
       owner: root
       group: root
       mode: 0644
