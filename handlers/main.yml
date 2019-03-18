@@ -31,3 +31,9 @@
     name: sendmail
     state: restarted
     enabled: yes
+
+- name: Stop sendmail
+  service:
+    name: sendmail
+    state: stopped
+    enabled: yes

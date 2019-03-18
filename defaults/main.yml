@@ -22,3 +22,6 @@ opendkim_local_keys_directory: "files/keys"
 opendkim_socket_port: 8891
 opendkim_group: "{% if ansible_os_family == 'Archlinux' %}mail{% else %}opendkim{% endif %}"
 postfix_relayhost: ""
+sendmail_packages:
+  - sendmail
+  - sendmail-bin
