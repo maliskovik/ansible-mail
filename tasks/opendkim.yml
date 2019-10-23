@@ -70,7 +70,7 @@
   with_items: "{{ opendkim_list }}"
   delegate_to: 127.0.0.1
   become: no
-  command: "opendkim-genkey -r -s {{ item.selector }} -d {{ item.domain }}"
+  command: "opendkim-genkey -b 2048 -r -s {{ item.selector }} -d {{ item.domain }}"
   args:
       creates: "{{ item.selector }}.private"
       chdir: "{{ opendkim_local_keys_directory }}"
