@@ -8,14 +8,14 @@
   when: ansible_os_family == "Debian"
   notify: Stop sendmail
 
-- name: Install postifx - Ubuntu
+- name: Install postfix - Ubuntu
   apt:
       name: postfix
       force: yes
       state: present
   when: ansible_os_family == "Debian"
 
-- name: Install postifx - Archlinux
+- name: Install postfix - Archlinux
   pacman:
     name: postfix
     state: present
@@ -34,43 +34,43 @@
 
 - name: Create postfix etc - Arch linux
   file:
-    path: /var/spool/postifx/etc
+    path: /var/spool/postfix/etc
     state: directory
-    owner: postifx
+    owner: postfix
     group: root
   when: ansible_os_family == "Archlinux"
 
 - name: Copy services - Arch
   copy:
     src: /etc/services
-    dest: /var/spool/postifx/etc/services
+    dest: /var/spool/postfix/etc/services
     remote_src: yes
-    owner: postifx
+    owner: postfix
     group: root
     mode: 0644
-  notify: Reload nginx
+  notify: Reload postfix
   when: ansible_os_family == "Archlinux"
 
 - name: Copy resolv - Arch
   copy:
     src: /etc/resolv.conf
-    dest: /var/spool/postifx/etc/resolv.conf
+    dest: /var/spool/postfix/etc/resolv.conf
     remote_src: yes
-    owner: postifx
+    owner: postfix
     group: root
     mode: 0644
-  notify: Reload nginx
+  notify: Reload postfix
   when: ansible_os_family == "Archlinux"
 
 - name: Copy nsswitch - Arch
   copy:
     src: /etc/nsswitch.conf
-    dest: /var/spool/postifx/etc/nsswitch.conf
+    dest: /var/spool/postfix/etc/nsswitch.conf
     remote_src: yes
-    owner: postifx
+    owner: postfix
     group: root
     mode: 0644
-  notify: Reload nginx
+  notify: Reload postfix
   when: ansible_os_family == "Archlinux"
 
 - name: Configure postfix aliases
