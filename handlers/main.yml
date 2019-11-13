@@ -17,6 +17,12 @@
     state: reloaded
     enabled: yes
 
+- name: Stop postifx
+  service:
+    name: postfix
+    state: stopped
+    enabled: yes
+
 - name: New aliases
   command: newaliases
 
