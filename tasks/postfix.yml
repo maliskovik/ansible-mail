@@ -73,16 +73,6 @@
   notify: Reload postfix
   when: ansible_os_family == "Archlinux"
 
-- name: Configure postfix aliases
-  template:
-      src: "{{ postfix_aliases_file|default(omit) }}"
-      dest: /etc/aliases
-      mode: 0644
-      owner: root
-      group: root
-  notify: New aliases
-  when: postfix_aliases_file is defined
-
 - name: Configure postfix mailname
   copy:
       content: "{{ postfix_hostname }}"

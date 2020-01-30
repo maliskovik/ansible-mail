@@ -23,9 +23,6 @@
     state: stopped
     enabled: yes
 
-- name: New aliases
-  command: newaliases
-
 - name: Reload postmap
   command: "postmap {{ postfix_postmap }}"
 
