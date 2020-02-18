@@ -1,0 +1,4 @@
+---
+mail_postfix_centos_packages:
+  - postfix
+  - cyrus-sasl-plain

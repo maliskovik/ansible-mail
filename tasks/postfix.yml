@@ -15,6 +15,12 @@
       state: present
   when: ansible_os_family == "Debian"
 
+- name: Install postfix - Centos
+  yum:
+      name: "{{ mail_postfix_centos_packages }}"
+      state: present
+  when: ansible_os_family == "RedHat"
+
 - name: Install postfix - Archlinux
   pacman:
     name: postfix
@@ -32,15 +38,15 @@
     - Reload postfix
     - Reload postmap
 
-- name: Create postfix etc - Arch linux
+- name: Create postfix etc - Arch linux, Centos
   file:
     path: /var/spool/postfix/etc
     state: directory
     owner: postfix
     group: root
-  when: ansible_os_family == "Archlinux"
+  when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
 
-- name: Copy services - Arch
+- name: Copy services - Arch, CentOs
   copy:
     src: /etc/services
     dest: /var/spool/postfix/etc/services
@@ -49,9 +55,9 @@
     group: root
     mode: 0644
   notify: Reload postfix
-  when: ansible_os_family == "Archlinux"
+  when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
 
-- name: Copy resolv - Arch
+- name: Copy resolv - Arch, Centos
   copy:
     src: /etc/resolv.conf
     dest: /var/spool/postfix/etc/resolv.conf
@@ -60,9 +66,9 @@
     group: root
     mode: 0644
   notify: Reload postfix
-  when: ansible_os_family == "Archlinux"
+  when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
 
-- name: Copy nsswitch - Arch
+- name: Copy nsswitch - Arch, Centos
   copy:
     src: /etc/nsswitch.conf
     dest: /var/spool/postfix/etc/nsswitch.conf
@@ -71,7 +77,7 @@
     group: root
     mode: 0644
   notify: Reload postfix
-  when: ansible_os_family == "Archlinux"
+  when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
 
 - name: Configure postfix mailname
   copy:
