@@ -115,3 +115,4 @@
     port: 25
     proto: tcp
     rule: allow
+  when: mail_allow_receive
