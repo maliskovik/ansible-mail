@@ -1,6 +1,8 @@
+{% if postfix_transport_map is defined %}
 {% for group in postfix_transport_map %}
 {% for item in group.addresses %}
 {{ item.ljust(20) }} {{ group.name }}:{% if group.name == "error" %}DMailer - {{ item }} does not work anymore{% endif%}
 
 {% endfor %}
 {% endfor %}
+{% endif %}

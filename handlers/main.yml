@@ -26,8 +26,11 @@
 - name: Reload postmap
   command: "postmap {{ postfix_postmap }}"
 
+- name: Reload virtual_regexp
+  command: "postmap {{ postfix_virutal_regexp }}"
+
 - name: Reload blacklist
-  command: "postmap {{ postfix_recipient_blacklist }}"
+  command: "postmap /etc/postfix/virtual_regexp"
 
 - name: Restart sendmail
   service:

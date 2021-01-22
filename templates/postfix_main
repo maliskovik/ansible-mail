@@ -24,17 +24,15 @@ smtp_tls_mandatory_ciphers=high
 smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
-# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
-# information on enabling SSL in the smtp client.
 
-smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 myhostname = {{ postfix_hostname }}
-alias_maps = hash:/etc/aliases
-alias_database = hash:/etc/aliases
-myorigin = {{ postfix_hostname }}
-mydestination = {{ postfix_destinations }}
 relayhost = {{ postfix_relayhost }}
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+mydestination = {{ postfix_destinations }}
 mynetworks = {{ postfix_networks }}
+alias_maps = hash:/etc/aliases {{ postfix_alias_maps }}
+alias_database = {{ postfix_alias_database }}
+myorigin = {{ postfix_hostname }}
 mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
@@ -47,7 +45,7 @@ smtpd_sasl_local_domain = $myhostname
 smtpd_recipient_restrictions =
   permit_sasl_authenticated,
   permit_mynetworks,
-  check_relay_domains
+  reject_unauth_destination
 
 {% if postfix_opendkim == True %}
 # DKIM
@@ -65,7 +63,6 @@ bounce_queue_lifetime = 2d
 maximal_queue_lifetime = 3d
 transport_maps = hash:{{ postfix_postmap }}
 
-# Transport limits, to gain back good reputation - http://steam.io/2013/04/01/postfix-rate-limiting/
 default_destination_concurrency_limit = 40
 initial_destination_concurrency = 10
 virtual_destination_concurrency_limit = 35

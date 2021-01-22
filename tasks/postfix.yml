@@ -34,6 +34,7 @@
       mode: 0644
       owner: root
       group: root
+      backup: yes
   notify:
     - Reload postfix
     - Reload postmap
@@ -106,9 +107,22 @@
       mode: 0644
       owner: root
       group: root
+      backup: yes
   notify:
     - Reload postfix
     - Reload postmap
+
+- name: Set virtual regexp
+  template:
+      src: "{{ postfix_virutal_regexp }}"
+      dest: "/etc/postfix/virtual_regexp"
+      mode: 0644
+      owner: root
+      group: root
+  notify:
+    - Reload postfix
+    - Reload virtual_regexp
+  when: postfix_virtual_fallback
 
 - name: Allow SMTP
   ufw:
