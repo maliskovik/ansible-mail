@@ -3,6 +3,7 @@ mail_sender: "sendmail"
 mail_allow_receive: False
 
 # Postfix variables
+postfix_alias_database: "hash:/etc/aliases"
 postfix_hostname: localhost
 postfix_destination: localhost
 postfix_networks: "127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128"
