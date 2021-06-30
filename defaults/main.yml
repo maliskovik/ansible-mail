@@ -10,6 +10,7 @@ postfix_networks: "127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128"
 postfix_tls: "yes"
 postfix_recipient_blacklist: "/etc/postfix/blacklist_destinations"
 postfix_postmap: "/etc/postfix/transport_map"
+postfix_virtual_path: "/etc/postfix/virtual"
 postfix_aliases_file: aliases
 postfix_alias_maps: "hash:/etc/aliases"
 alias_database: "hash:/etc/aliases"

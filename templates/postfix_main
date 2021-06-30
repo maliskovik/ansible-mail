@@ -37,7 +37,10 @@ mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = ipv4
-
+{% if postfix_virtual is defined %}
+# Virtual maps
+virtual_maps = regexp:{{ postfix_virtual_path }}
+{% endif %}
 # SASL support for clients
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_security_options = noanonymous

@@ -47,6 +47,17 @@
     group: root
   when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
 
+- name: Configure virtual mapping
+  template:
+    src: "{{ postfix_virtual }}"
+    dest: "{{ postfix_virtual_path }}"
+    mode: 0644
+    owner: root
+    group: root
+    backup: yes
+  when: postfix_virtual_path is defined
+  notify: postmap virtual
+
 - name: Copy services - Arch, CentOs
   copy:
     src: /etc/services
