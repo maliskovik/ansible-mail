@@ -55,7 +55,7 @@
     owner: root
     group: root
     backup: yes
-  when: postfix_virtual_path is defined
+  when: postfix_virtual is defined
   notify: postmap virtual
 
 - name: Copy services - Arch, CentOs
