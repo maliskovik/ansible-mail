@@ -29,6 +29,9 @@
 - name: postmap virtual
   command: "postmap {{ postfix_virtual_path }}"
 
+- name: postmap virtual_alias_maps
+  command: "postmap {{ postfix_virtual_alias_maps_path }}"
+
 - name: Reload virtual_regexp
   command: "postmap {{ postfix_virutal_regexp }}"
 

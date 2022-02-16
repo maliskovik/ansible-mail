@@ -1,8 +1,15 @@
-{% if postfix_transport_map is defined %}
-{% for group in postfix_transport_map %}
-{% for item in group.addresses %}
-{{ item.ljust(20) }} {{ group.name }}:{% if group.name == "error" %}DMailer - {{ item }} does not work anymore{% endif%}
+{% if postfix_transport_maps_groupped is defined %}
+{% for group in postfix_transport_maps_groupped %}
+{% for pattern in group.patterns %}
+{{ pattern.ljust(20) }} {{ group.transport_path }}:{% if group.relay_server is defined %}{{ group.relay_server }}{% if group.port is defined %}:{{ group.port }}{% endif %}{% endif %}
 
 {% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if postfix_transport_maps is defined %}
+{% for item in postfix_transport_maps %}
+{{ item.pattern.ljust(20) }} {{ item.transport_path }}:{% if item.relay_server is defined %}{{ item.relay_server }}{% if item.port is defined %}:{{ item.port }}{% endif %}{% endif %}
+
 {% endfor %}
 {% endif %}

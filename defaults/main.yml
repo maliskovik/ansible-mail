@@ -5,8 +5,14 @@ mail_allow_receive: False
 # Postfix variables
 postfix_alias_database: "hash:/etc/aliases"
 postfix_hostname: localhost
-postfix_destination: localhost
-postfix_networks: "127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128"
+
+postfix_destinations:
+  - localhost
+  - lists.cosylab.com
+postfix_networks:
+  - '127.0.0.0/8'
+  - '[::ffff:127.0.0.0]/104'
+  - '[::1]/128'
 postfix_tls: "yes"
 postfix_recipient_blacklist: "/etc/postfix/blacklist_destinations"
 postfix_postmap: "/etc/postfix/transport_map"
@@ -15,9 +21,14 @@ postfix_aliases_file: aliases
 postfix_alias_maps: "hash:/etc/aliases"
 alias_database: "hash:/etc/aliases"
 postfix_virtual_fallback: False
+postfix_relayhost: ""
+postfix_sasl_passwd_file: "/etc/postfix/sasl_passwd"
+postfix_tls_cert: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+postfix_tls_key: "/etc/ssl/private/ssl-cert-snakeoil.key"
+postfix_virtual_alias_maps_path: "/etc/postfix/virtual_regexp"
 # DKIM variables
 postfix_opendkim: False
-opendkim_config_directory: /etc/opendkimpu
+opendkim_config_directory: /etc/opendkim
 opendkim_config_file_path: "/etc/opendkim.conf"
 opendkim_uid: 107
 opendkim_keys_directory: "{{ opendkim_config_directory }}/keys"
@@ -26,7 +37,7 @@ opendkim_key_table: "{{ opendkim_config_directory }}/keyTable"
 opendkim_local_keys_directory: "files/keys"
 opendkim_socket_port: 8891
 opendkim_group: "{% if ansible_os_family == 'Archlinux' %}mail{% else %}opendkim{% endif %}"
-postfix_relayhost: ""
 sendmail_packages:
   - sendmail
   - sendmail-bin
+mail_opendim_canonicalization: relaxed/relaxed

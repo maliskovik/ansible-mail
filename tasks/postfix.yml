@@ -58,6 +58,17 @@
   when: postfix_virtual is defined
   notify: postmap virtual
 
+- name: Configure postfix_virtual_alias_maps
+  template:
+    src: "virtual_alias_maps"
+    dest: "{{ postfix_virtual_alias_maps_path }}"
+    mode: 0644
+    owner: root
+    group: root
+    backup: yes
+  when: postfix_virtual_alias_maps is defined
+  notify: postmap virtual_alias_maps
+
 - name: Copy services - Arch, CentOs
   copy:
     src: /etc/services
@@ -112,7 +123,7 @@
     - Reload postmap
 
 - name: Set master config
-  copy:
+  template:
       src: postfix_master
       dest: /etc/postfix/master.cf
       mode: 0644
@@ -123,21 +134,39 @@
     - Reload postfix
     - Reload postmap
 
-- name: Set virtual regexp
+- name: Create sasl passwords
   template:
-      src: "{{ postfix_virutal_regexp }}"
-      dest: "/etc/postfix/virtual_regexp"
-      mode: 0644
+      src: "sasl_password"
+      dest: "{{ postfix_sasl_passwd_file }}"
+      mode: 0600
       owner: root
       group: root
   notify:
     - Reload postfix
-    - Reload virtual_regexp
-  when: postfix_virtual_fallback
+  when: postfix_sasl_credentials is defined
+
+- name: Reload sasl_passwd
+  command: "postmap {{ postfix_sasl_passwd_file }}"
+  when: postfix_sasl_credentials is defined
+
+- name: Check permissions sasl_passwd
+  file:
+    path: "{{ postfix_sasl_passwd_file }}"
+    mode: 0600
+    owner: root
+    group: root
+  when: postfix_sasl_credentials is defined
 
 - name: Allow SMTP
   ufw:
     port: 25
+    proto: tcp
+    rule: allow
+  when: mail_allow_receive
+
+- name: Allow SMTPs
+  ufw:
+    port: 587
     proto: tcp
     rule: allow
   when: mail_allow_receive

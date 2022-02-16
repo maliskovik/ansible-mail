@@ -1,0 +1,5 @@
+{% if postfix_virtual_alias_maps is defined %}
+{% for keypair in postfix_virtual_alias_maps %}
+{{ keypair.key }} {{ keypair.target }}
+{% endfor %}
+{% endif %}

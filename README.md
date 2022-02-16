@@ -5,7 +5,7 @@ This ansible role installs and configures sendmial for small setups or postfix w
 
 * mail_sender: Which agent to use (sendmail(default) or opendkim)
 * opendkim_trusted_hosts -  Host legible for signing
-* postfix_destinations - Hosts to allow forwarding from
+* postfix_destinations - List od hosts to allow forwarding from
 * postfix_networks - postfix networks
 * opendkim_list - this is a list type entry. Each key defined here is either
 copied from the files(if it exists), or is created.
@@ -15,9 +15,8 @@ copied from the files(if it exists), or is created.
 
 ## Optional variables
 
-* postfix_destination - Hosts to allow forwarding from
-* postfix_networks - postfix mynetworks variable"
 * postfix_aliases - path to the aliases file to use on remote.
+* postfix_relay_domains - Lists of domains to relay
 * postfix_opendkim - Use openDKIM (True|False)
 * opendkim_config_directory -  where all opendkim configuration is placed
 * opendkim_keys_directory - wherer to place dkim keys on remote
