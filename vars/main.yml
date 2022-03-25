@@ -2,3 +2,7 @@
 mail_postfix_centos_packages:
   - postfix
   - cyrus-sasl-plain
+
+mail_postfix_dovecot_packages:
+  - dovecot-core
+  - dovecot-imapd

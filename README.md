@@ -37,3 +37,9 @@ Also, the keys should already be automatically generated if not present in:
 `files/keys`
 
 You will need to have opendkim installed locally for that to work.
+
+## SASL users
+Generate hashed passwords with:
+```
+mkpasswd --method=sha-512
+```

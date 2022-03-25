@@ -15,6 +15,15 @@
       state: present
   when: ansible_os_family == "Debian"
 
+- name: Install dovecot - Ubuntu
+  apt:
+      name: "{{ mail_postfix_dovecot_packages }}"
+      force: yes
+      state: present
+  when:
+    - ansible_os_family == "Debian"
+    - postfix_sasl_clients_enabled
+
 - name: Install postfix - Centos
   yum:
       name: "{{ mail_postfix_centos_packages }}"
@@ -142,21 +151,18 @@
       owner: root
       group: root
   notify:
+    - Reload sasl_passwd
     - Reload postfix
   when: postfix_sasl_credentials is defined
 
-- name: Reload sasl_passwd
-  command: "postmap {{ postfix_sasl_passwd_file }}"
-  when: postfix_sasl_credentials is defined
-
-- name: Check permissions sasl_passwd
-  file:
-    path: "{{ postfix_sasl_passwd_file }}"
-    mode: 0600
-    owner: root
-    group: root
-  when: postfix_sasl_credentials is defined
-
+- name: Create smtp users
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    shell: /sbin/nologin
+  with_items: "{{ postfix_sasl_users }}"
+  when: postfix_sasl_users is defined
+  
 - name: Allow SMTP
   ufw:
     port: 25
@@ -169,4 +175,4 @@
     port: 587
     proto: tcp
     rule: allow
-  when: mail_allow_receive
+  when: postfix_sasl_clients_enabled

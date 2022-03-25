@@ -22,7 +22,11 @@ postfix_alias_maps: "hash:/etc/aliases"
 alias_database: "hash:/etc/aliases"
 postfix_virtual_fallback: False
 postfix_relayhost: ""
+postfix_sasl_clients_enabled: False
 postfix_sasl_passwd_file: "/etc/postfix/sasl_passwd"
+postfix_sasl_smtp_config_dest: "/etc/postfix/sasl/smtpd.conf"
+postix_smtpd_pam_dest: "/etc/pam.d/smtpd"
+postix_sasl_permited_groups_dest: "/etc/postfix/sasl-group.allowed"
 postfix_tls_cert: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 postfix_tls_key: "/etc/ssl/private/ssl-cert-snakeoil.key"
 postfix_virtual_alias_maps_path: "/etc/postfix/virtual_regexp"
@@ -41,3 +45,4 @@ sendmail_packages:
   - sendmail
   - sendmail-bin
 mail_opendim_canonicalization: relaxed/relaxed
+mail_postfix_max_message_size: 26214400
