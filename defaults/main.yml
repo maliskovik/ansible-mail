@@ -46,3 +46,4 @@ sendmail_packages:
   - sendmail-bin
 mail_opendim_canonicalization: relaxed/relaxed
 mail_postfix_max_message_size: 26214400
+mail_allow_receive_docker: false

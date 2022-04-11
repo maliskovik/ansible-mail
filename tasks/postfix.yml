@@ -162,7 +162,7 @@
     shell: /sbin/nologin
   with_items: "{{ postfix_sasl_users }}"
   when: postfix_sasl_users is defined
-  
+
 - name: Allow SMTP
   ufw:
     port: 25
@@ -176,3 +176,11 @@
     proto: tcp
     rule: allow
   when: postfix_sasl_clients_enabled
+
+- name: Allow SMTP from docker
+  ufw:
+    port: 25
+    from_ip: "172.16.0.0/12"
+    proto: tcp
+    rule: allow
+  when: mail_allow_receive_docker
