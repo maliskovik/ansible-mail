@@ -15,7 +15,7 @@
   when: ansible_os_family == "Archlinux"
 
 - name: Install opendkim - Centos
-  yum:
+  dnf:
     name: opendkim
     state: present
   when: ansible_os_family == "RedHat"
