@@ -24,8 +24,8 @@
     - ansible_os_family == "Debian"
     - postfix_sasl_clients_enabled
 
-- name: Install postfix - Centos
-  yum:
+- name: Install postfix - Rocky
+  dnf:
       name: "{{ mail_postfix_centos_packages }}"
       state: present
   when: ansible_os_family == "RedHat"
