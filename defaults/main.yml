@@ -3,22 +3,22 @@ mail_sender: "sendmail"
 mail_allow_receive: False
 
 # Postfix variables
-postfix_alias_database: "hash:/etc/aliases"
 postfix_hostname: localhost
 
 postfix_destinations:
   - localhost
 postfix_networks:
-  - '127.0.0.0/8'
-  - '[::ffff:127.0.0.0]/104'
-  - '[::1]/128'
+  - "127.0.0.0/8"
+  - "[::ffff:127.0.0.0]/104"
+  - "[::1]/128"
 postfix_tls: "yes"
 postfix_recipient_blacklist: "/etc/postfix/blacklist_destinations"
 postfix_postmap: "/etc/postfix/transport_map"
 postfix_virtual_path: "/etc/postfix/virtual"
+postfix_alias_database: "lmdb:/etc/aliases"
 postfix_aliases_file: aliases
-postfix_alias_maps: "hash:/etc/aliases"
-alias_database: "hash:/etc/aliases"
+postfix_alias_maps: "lmdb:/etc/aliases"
+alias_database: "lmdb:/etc/aliases"
 postfix_virtual_fallback: False
 postfix_relayhost: ""
 postfix_sasl_clients_enabled: False

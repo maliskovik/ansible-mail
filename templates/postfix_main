@@ -1,6 +1,6 @@
 # Main settings
 alias_database = {{ postfix_alias_database }}
-alias_maps = hash:/etc/aliases {{ postfix_alias_maps }}
+alias_maps = lmdb:/etc/aliases {{ postfix_alias_maps }}
 inet_interfaces = all
 inet_protocols = ipv4
 mydestination = {% for destination in postfix_destinations %}{{ destination }} {% endfor%}
@@ -11,7 +11,7 @@ mynetworks = {% for my_network in postfix_networks %}{{ my_network }} {% endfor 
 myorigin = {{ postfix_hostname }}
 relayhost = {{ postfix_relayhost }}
 smtpd_banner = $myhostname ESMTP $mail_name
-transport_maps = hash:{{ postfix_postmap }}
+transport_maps = lmdb:{{ postfix_postmap }}
 {% if postfix_relay_domains is defined %}
 relay_domains={% for domain in postfix_relay_domains %}{{ domain }}{% endfor %}
 {% endif %}
