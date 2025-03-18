@@ -14,6 +14,7 @@ postfix_networks:
 postfix_tls: "yes"
 postfix_recipient_blacklist: "/etc/postfix/blacklist_destinations"
 postfix_postmap: "/etc/postfix/transport_map"
+postfix_postmap_url: "lmdb:{{ postfix_postmap }}"
 postfix_virtual_path: "/etc/postfix/virtual"
 postfix_alias_database: "lmdb:/etc/aliases"
 postfix_aliases_file: aliases

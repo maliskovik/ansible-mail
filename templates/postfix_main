@@ -11,7 +11,7 @@ mynetworks = {% for my_network in postfix_networks %}{{ my_network }} {% endfor 
 myorigin = {{ postfix_hostname }}
 relayhost = {{ postfix_relayhost }}
 smtpd_banner = $myhostname ESMTP $mail_name
-transport_maps = lmdb:{{ postfix_postmap }}
+transport_maps = {{ postfix_postmap_url }}
 {% if postfix_relay_domains is defined %}
 relay_domains={% for domain in postfix_relay_domains %}{{ domain }}{% endfor %}
 {% endif %}

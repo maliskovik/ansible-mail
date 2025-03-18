@@ -2,6 +2,7 @@
 mail_postfix_centos_packages:
   - postfix
   - cyrus-sasl-plain
+  - postfix-lmdb
 
 mail_postfix_dovecot_packages:
   - dovecot-core
