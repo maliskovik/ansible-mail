@@ -4,6 +4,11 @@ mail_postfix_centos_packages:
   - cyrus-sasl-plain
   - postfix-lmdb
 
+mail_postfix_debian_packages:
+  - postfix
+  - libsasl2-modules
+  - postfix-lmdb
+
 mail_opendkim_centos_packages:
   - opendkim
 
