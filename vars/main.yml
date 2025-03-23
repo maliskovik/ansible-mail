@@ -4,6 +4,9 @@ mail_postfix_centos_packages:
   - cyrus-sasl-plain
   - postfix-lmdb
 
+mail_opendkim_centos_packages:
+  - opendkim
+
 mail_postfix_dovecot_packages:
   - dovecot-core
   - dovecot-imapd

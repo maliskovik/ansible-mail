@@ -3,9 +3,9 @@
 
 - name: Install opendkim - Ubuntu
   apt:
-      name: opendkim,opendkim-tools
-      force: yes
-      state: present
+    name: opendkim,opendkim-tools
+    force: yes
+    state: present
   when: ansible_os_family == "Debian"
 
 - name: Install opendkim - Archlinux
@@ -16,25 +16,26 @@
 
 - name: Install opendkim - Centos
   dnf:
-    name: opendkim
+    name: "{{ mail_opendkim_centos_packages }}"
     state: present
+    enablerepo: crb
   when: ansible_os_family == "RedHat"
 
 - name: Create opendkim directory
   file:
-      state: directory
-      owner: opendkim
-      group: "{{ opendkim_group }}"
-      mode: 0755
-      path: "{{ opendkim_config_directory }}"
+    state: directory
+    owner: opendkim
+    group: "{{ opendkim_group }}"
+    mode: 0755
+    path: "{{ opendkim_config_directory }}"
 
 - name: Create opendkim keys directory
   file:
-      state: directory
-      owner: opendkim
-      group: "{{ opendkim_group }}"
-      mode: 0700
-      path: "{{ opendkim_keys_directory }}"
+    state: directory
+    owner: opendkim
+    group: "{{ opendkim_group }}"
+    mode: 0700
+    path: "{{ opendkim_keys_directory }}"
 
 - set_fact:
     opendkim_config_file_path: "/etc/opendkim/opendkim.conf"
@@ -44,11 +45,11 @@
 
 - name: Configure opendkim
   template:
-      src: opendkim.conf
-      dest: "{{ opendkim_config_file_path }}"
-      owner: root
-      group: root
-      mode: 0644
+    src: opendkim.conf
+    dest: "{{ opendkim_config_file_path }}"
+    owner: root
+    group: root
+    mode: 0644
   notify: Restart opendkim
 
 - name: Set opendkim socket
@@ -63,11 +64,11 @@
 
 - name: Add trustedHosts
   template:
-      src: trusted_hosts
-      dest: "{{ opendkim_config_directory }}/trustedHosts"
-      mode: 0644
-      owner: opendkim
-      group: "{{ opendkim_group }}"
+    src: trusted_hosts
+    dest: "{{ opendkim_config_directory }}/trustedHosts"
+    mode: 0644
+    owner: opendkim
+    group: "{{ opendkim_group }}"
   notify: Restart opendkim
 
 # Creates the key if it does not exist
@@ -78,34 +79,40 @@
   become: no
   command: "opendkim-genkey -b 2048 -r -s {{ item.selector }} -d {{ item.domain }}"
   args:
-      creates: "{{ item.selector }}.private"
-      chdir: "{{ opendkim_local_keys_directory }}"
+    creates: "{{ item.selector }}.private"
+    chdir: "{{ opendkim_local_keys_directory }}"
 
 - name: Transfer opendkim keys
   with_items: "{{ opendkim_list }}"
   when: opendkim_list is defined
   copy:
-      src: "{{ opendkim_local_keys_directory }}/{{ item.selector }}.private"
-      dest: "{{ opendkim_keys_directory }}/{{ item.selector }}.private"
-      mode: 0600
-      owner: opendkim
-      group: "{{ opendkim_group }}"
+    src: "{{ opendkim_local_keys_directory }}/{{ item.selector }}.private"
+    dest: "{{ opendkim_keys_directory }}/{{ item.selector }}.private"
+    mode: 0600
+    owner: opendkim
+    group: "{{ opendkim_group }}"
   notify: Restart opendkim
 
 - name: Add signingTable
   template:
-      src: signing_table
-      dest: "{{ opendkim_signing_table }}"
-      mode: 0644
-      owner: opendkim
-      group: "{{ opendkim_group }}"
+    src: signing_table
+    dest: "{{ opendkim_signing_table }}"
+    mode: 0644
+    owner: opendkim
+    group: "{{ opendkim_group }}"
   notify: Restart opendkim
 
 - name: Add keyTable
   template:
-      src: key_table
-      dest: "{{ opendkim_key_table }}"
-      mode: 0644
-      owner: opendkim
-      group: "{{ opendkim_group }}"
+    src: key_table
+    dest: "{{ opendkim_key_table }}"
+    mode: 0644
+    owner: opendkim
+    group: "{{ opendkim_group }}"
   notify: Restart opendkim
+
+- name: Start opendkim
+  service:
+    name: opendkim
+    state: started
+    enabled: yes

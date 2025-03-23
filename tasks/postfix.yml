@@ -1,33 +1,32 @@
 ---
-
 - name: Remove sendmail
   apt:
-      name: "{{ sendmail_packages }}"
-      force: yes
-      state: absent
+    name: "{{ sendmail_packages }}"
+    force: yes
+    state: absent
   when: ansible_os_family == "Debian"
   notify: Stop sendmail
 
 - name: Install postfix - Ubuntu
   apt:
-      name: postfix
-      force: yes
-      state: present
+    name: postfix
+    force: yes
+    state: present
   when: ansible_os_family == "Debian"
 
 - name: Install dovecot - Ubuntu
   apt:
-      name: "{{ mail_postfix_dovecot_packages }}"
-      force: yes
-      state: present
+    name: "{{ mail_postfix_dovecot_packages }}"
+    force: yes
+    state: present
   when:
     - ansible_os_family == "Debian"
     - postfix_sasl_clients_enabled
 
 - name: Install postfix - Rocky
   dnf:
-      name: "{{ mail_postfix_centos_packages }}"
-      state: present
+    name: "{{ mail_postfix_centos_packages }}"
+    state: present
   when: ansible_os_family == "RedHat"
 
 - name: Install postfix - Archlinux
@@ -38,12 +37,12 @@
 
 - name: Configure postfix main
   template:
-      src: postfix_main
-      dest: /etc/postfix/main.cf
-      mode: 0644
-      owner: root
-      group: root
-      backup: yes
+    src: postfix_main
+    dest: /etc/postfix/main.cf
+    mode: 0644
+    owner: root
+    group: root
+    backup: yes
   notify:
     - Reload postfix
     - Reload postmap
@@ -113,43 +112,43 @@
 
 - name: Configure postfix mailname
   copy:
-      content: "{{ postfix_hostname }}"
-      dest: /etc/mailname
-      mode: 0644
-      owner: root
-      group: root
+    content: "{{ postfix_hostname }}"
+    dest: /etc/mailname
+    mode: 0644
+    owner: root
+    group: root
   notify: Reload postfix
 
 - name: Set transport map
   template:
-      src: transport_map
-      dest: "{{ postfix_postmap }}"
-      mode: 0644
-      owner: root
-      group: root
+    src: transport_map
+    dest: "{{ postfix_postmap }}"
+    mode: 0644
+    owner: root
+    group: root
   notify:
     - Reload postfix
     - Reload postmap
 
 - name: Set master config
   template:
-      src: postfix_master
-      dest: /etc/postfix/master.cf
-      mode: 0644
-      owner: root
-      group: root
-      backup: yes
+    src: postfix_master
+    dest: /etc/postfix/master.cf
+    mode: 0644
+    owner: root
+    group: root
+    backup: yes
   notify:
     - Reload postfix
     - Reload postmap
 
 - name: Create sasl passwords
   template:
-      src: "sasl_password"
-      dest: "{{ postfix_sasl_passwd_file }}"
-      mode: 0600
-      owner: root
-      group: root
+    src: "sasl_password"
+    dest: "{{ postfix_sasl_passwd_file }}"
+    mode: 0600
+    owner: root
+    group: root
   notify:
     - Reload sasl_passwd
     - Reload postfix
@@ -184,3 +183,9 @@
     proto: tcp
     rule: allow
   when: mail_allow_receive_docker
+
+- name: Start postfix
+  service:
+    name: postfix
+    state: started
+    enabled: yes
