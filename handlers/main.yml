@@ -58,3 +58,7 @@
     name: sendmail
     state: stopped
     enabled: yes
+
+- name: Compile sendmail config
+  command: "make -C /etc/mail"
+  notify: Restart sendmail

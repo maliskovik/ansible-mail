@@ -22,6 +22,7 @@ copied from the files(if it exists), or is created.
 * opendkim_keys_directory - wherer to place dkim keys on remote
 * opendkim_signing_table - location of the signing table file on remote
 * opendkim_key_table - location of the keytable file on remote.
+* mail_sendmail_relay_server - Relay server to use
 
 ### Opendkim
 Each mail server needs a host variable containing the `opendkim_list`
