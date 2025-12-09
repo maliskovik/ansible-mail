@@ -4,7 +4,7 @@
     name: postfix
     force: yes
     state: absent
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
   notify: Stop postifx
 
 - name: Install sendmail
@@ -12,7 +12,7 @@
     name: "{{ sendmail_packages }}"
     force: yes
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
   notify: Restart sendmail
 
 - name: Configure mailrelay

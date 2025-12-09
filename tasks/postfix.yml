@@ -4,7 +4,7 @@
     name: "{{ sendmail_packages }}"
     force: yes
     state: absent
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
   notify: Stop sendmail
 
 - name: Install postfix - Ubuntu
@@ -12,7 +12,7 @@
     name: "{{ mail_postfix_debian_packages }}"
     force: yes
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
 
 - name: Install dovecot - Ubuntu
   apt:
@@ -20,20 +20,20 @@
     force: yes
     state: present
   when:
-    - ansible_os_family == "Debian"
+    - ansible_facts["os_family"] == "Debian"
     - postfix_sasl_clients_enabled
 
 - name: Install postfix - Rocky
   dnf:
     name: "{{ mail_postfix_centos_packages }}"
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts["os_family"] == "RedHat"
 
 - name: Install postfix - Archlinux
   pacman:
     name: postfix
     state: present
-  when: ansible_os_family == "Archlinux"
+  when: ansible_facts["os_family"] == "Archlinux"
 
 - name: Configure postfix main
   template:
@@ -53,7 +53,7 @@
     state: directory
     owner: postfix
     group: root
-  when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
+  when: ( ansible_facts["os_family"] == "Archlinux" or ansible_facts["os_family"] == "RedHat" )
 
 - name: Configure virtual mapping
   template:
@@ -86,7 +86,7 @@
     group: root
     mode: 0644
   notify: Reload postfix
-  when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
+  when: ( ansible_facts["os_family"] == "Archlinux" or ansible_facts["os_family"] == "RedHat" )
 
 - name: Copy resolv - Arch, Centos
   copy:
@@ -97,7 +97,7 @@
     group: root
     mode: 0644
   notify: Reload postfix
-  when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
+  when: ( ansible_facts["os_family"] == "Archlinux" or ansible_facts["os_family"] == "RedHat" )
 
 - name: Copy nsswitch - Arch, Centos
   copy:
@@ -108,7 +108,7 @@
     group: root
     mode: 0644
   notify: Reload postfix
-  when: ( ansible_os_family == "Archlinux" or ansible_os_family == "RedHat" )
+  when: ( ansible_facts["os_family"] == "Archlinux" or ansible_facts["os_family"] == "RedHat" )
 
 - name: Configure postfix mailname
   copy:

@@ -6,20 +6,20 @@
     name: opendkim,opendkim-tools
     force: yes
     state: present
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
 
 - name: Install opendkim - Archlinux
   pacman:
     name: opendkim
     state: present
-  when: ansible_os_family == "Archlinux"
+  when: ansible_facts["os_family"] == "Archlinux"
 
 - name: Install opendkim - Centos
   dnf:
     name: "{{ mail_opendkim_centos_packages }}"
     state: present
     enablerepo: crb
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts["os_family"] == "RedHat"
 
 - name: Create opendkim directory
   file:
@@ -41,7 +41,7 @@
     opendkim_config_file_path: "/etc/opendkim/opendkim.conf"
     opendkim_socket_path: "/run/opendkim/opendkim.sock"
     opendkim_uid: opendkim
-  when: ansible_os_family == "Archlinux"
+  when: ansible_facts["os_family"] == "Archlinux"
 
 - name: Configure opendkim
   template:
@@ -60,7 +60,7 @@
     group: root
     mode: 0644
   notify: Restart opendkim
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
 
 - name: Add trustedHosts
   template:
